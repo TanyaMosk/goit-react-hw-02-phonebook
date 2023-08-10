@@ -1,7 +1,8 @@
-import { Formik, Field, Form } from 'formik';
-import { nanoid } from 'nanoid'
+
 import { Component } from "react";
 import { ContactList } from './ContactList/ContactList';
+import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from "./Filter/Filter";
 
 
 export class App extends Component{
@@ -12,57 +13,52 @@ export class App extends Component{
     {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
     {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
   ],
-  filter: '',
-  name: '',
-  number: ''
+    filter: '',    
   }
   
   addContacts = newContact => {
-     console.log(newContact)
-    this.setState(prevState => {
+    console.log(newContact)
+    const checkContact = this.state.contacts.find(contact => contact.name === newContact.name);
+
+  if (checkContact) {    
+    return alert(`${newContact.name} is already in contacts.`);;
+  }
+
+    this.setState(prevState => {    
       return {
         contacts: [...prevState.contacts, newContact],
       };
     });
   };
+
+//   contactFilter = newContact => {
+//   this.setState({
+//     filter: {
+//       ...this.state.filter,
+//       name: newContact,
+//     },
+//   });
+// };
+  
+  contactFilter = searchContact => {
+  this.setState({
+    filter: searchContact,
+  });
+};
+  
   
   render() {    
+    const { filter, contacts } = this.state;     
+
+     const visibleContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
 
     return (
       <div>
       <h1>Phonebook</h1>
-      <Formik
-        initialValues={{
-          name: '',
-          number: '',
-        }}
-        onSubmit={(values, actions) => {
-        this.addContacts({ ...values, id: nanoid() });
-        actions.resetForm();
-      }}
-      >
-      <Form>
-        <label>Name</label>
-        <Field type="text"
-        name="name"
-        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        required />
-
-        <label htmlFor="lastName">Number</label>
-        <Field
-        type="tel"
-        name="number"
-        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-        title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-        required
-        />          
-        <button type="submit">Add contact</button>
-      </Form>
-        </Formik>
-        <h2>Contacts</h2>
-       {/* <Filter ... /> */}       
-        <ContactList contacts={this.state.contacts} />
+      <ContactForm onAdd={this.addContacts} />
+      <h2>Contacts</h2>
+      <Filter filter={filter} onChange={this.contactFilter}/>       
+      <ContactList contacts={visibleContacts} />
     </div>
     )
   }
