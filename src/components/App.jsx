@@ -1,4 +1,4 @@
-
+import { GlobalStyle } from "./GlobalStyle";
 import { Component } from "react";
 import { ContactList } from './ContactList/ContactList';
 import { ContactForm } from './ContactForm/ContactForm';
@@ -44,21 +44,30 @@ export class App extends Component{
   this.setState({
     filter: searchContact,
   });
-};
+  };
   
+  onDelete = (ContactId) => {
+    console.log(ContactId);
+    this.setState(prevState => {
+      return {
+        contacts: prevState.contacts.filter(contact => contact.id !== ContactId)
+      }
+    })
+  }
   
   render() {    
     const { filter, contacts } = this.state;     
 
-     const visibleContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
+    const visibleContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
 
     return (
-      <div>
+    <div>
       <h1>Phonebook</h1>
       <ContactForm onAdd={this.addContacts} />
       <h2>Contacts</h2>
       <Filter filter={filter} onChange={this.contactFilter}/>       
-      <ContactList contacts={visibleContacts} />
+      <ContactList contacts={visibleContacts} onDelete={this.onDelete} />
+      <GlobalStyle/>
     </div>
     )
   }
