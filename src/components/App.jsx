@@ -1,9 +1,8 @@
 import { GlobalStyle } from "./GlobalStyle";
 import { Component } from "react";
-import { ContactList } from './ContactList/ContactList';
-import { ContactForm } from './ContactForm/ContactForm';
-import { Filter } from "./Filter/Filter";
-
+import ContactList from './ContactList';
+import ContactForm from './ContactForm';
+import Filter from "./Filter";
 
 export class App extends Component{
  state = {
@@ -30,15 +29,6 @@ export class App extends Component{
       };
     });
   };
-
-//   contactFilter = newContact => {
-//   this.setState({
-//     filter: {
-//       ...this.state.filter,
-//       name: newContact,
-//     },
-//   });
-// };
   
   contactFilter = searchContact => {
   this.setState({
@@ -53,7 +43,7 @@ export class App extends Component{
         contacts: prevState.contacts.filter(contact => contact.id !== ContactId)
       }
     })
-  }
+  };
   
   render() {    
     const { filter, contacts } = this.state;     

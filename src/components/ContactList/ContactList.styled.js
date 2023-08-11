@@ -7,14 +7,26 @@ gap: 5px;
 padding-left: 20px;
 `;
 
-export const ListItem = styled.li`
-/* display: flex;
-justify-content: space-between; */
-/* list-style: circle; */
+export const WrapItem = styled.div`
+display: flex;
+justify-content: space-between;
+`;
+
+export const Text = styled.p`
+margin: 0;
+padding: 5px;
 `;
 
 export const DeleteBtn = styled.button`
-/* margin-left: 20px;
-margin-right: auto; */
+border-radius: 10px;
+padding: 4px  8px;
 
+&:hover{
+    background-color: darkblue;
+    color: white;
+}
+&:focus{
+    background-color: darkblue;
+    color: white;
+}
 `; 
